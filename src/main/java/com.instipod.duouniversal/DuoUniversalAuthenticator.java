@@ -198,7 +198,7 @@ public class DuoUniversalAuthenticator implements org.keycloak.authentication.Au
             duoClient.healthCheck();
         } catch (DuoException exception) {
             //Duo is not available
-            logger.warn("Duo was not reachable!");
+            logger.warn("Duo was not reachable!", exception);
             if (authConfig.getConfig().getOrDefault(DuoUniversalAuthenticatorFactory.DUO_FAIL_SAFE, "true").equalsIgnoreCase("false")) {
                 //fail secure, deny login
                 authenticationFlowContext.failure(AuthenticationFlowError.INVALID_CREDENTIALS);
