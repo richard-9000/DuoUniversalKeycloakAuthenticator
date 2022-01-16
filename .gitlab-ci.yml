@@ -1,0 +1,25 @@
+jar-build:
+  # Use the official docker image.
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  tags: 
+    - docker
+  before_script:
+    - git submodule update --init
+  # - todo: set pom version to keycloak version
+  # Default branch leaves tag empty (= latest tag)
+  # All other branches are tagged with the escaped branch name (commit ref slug)
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      else
+        tag=":$CI_COMMIT_REF_SLUG"
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      fi
+      mvn clean test -s ci_settings.xml -X -U
+      mvn deploy -s ci_settings.xml
+      #docker run --user 998:997 --rm -v $(pwd):/keycloak-duo-spi -w /keycloak-duo-spi ohiosupercomputer/keycloak_duo_spi_buildbox:latest mvn -s ci_settings.xml clean test 
