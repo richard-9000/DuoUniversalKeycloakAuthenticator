@@ -39,7 +39,7 @@ public class DuoUniversalAuthenticator implements org.keycloak.authentication.Au
     }
 
     private String getRedirectUrlShim(AuthenticationFlowContext context, Boolean forceToken) {
-        MultivaluedMap<String, String> queryParams = context.getHttpRequest().getUri().getQueryParameters();
+        MultivaluedMap<String, String> queryParams = context.getUriInfo().getQueryParameters();
         String sessionCode;
         if (queryParams.containsKey("duo_code") && queryParams.containsKey("session_code") && !forceToken) {
             //Duo requires the same session_code as the first redirect in order to retrieve the token
