@@ -48,7 +48,7 @@ public class DuoUniversalAuthenticator implements org.keycloak.authentication.Au
             sessionCode = context.generateAccessCode();
         }
 
-        String baseUrl = context.getHttpRequest().getUri().getBaseUri().toString();
+        String baseUrl = context.getUriInfo().getBaseUri().toString();
         baseUrl = baseUrl + "realms/" + context.getRealm().getName() + "/duo-universal/callback";
         baseUrl = baseUrl + "?kc_client_id=" + context.getAuthenticationSession().getClient().getClientId();
         baseUrl = baseUrl + "&kc_execution=" + context.getExecution().getId();
